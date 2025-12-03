@@ -211,6 +211,7 @@ where month(s.SaleDate) = month(getdate())
 group by e.Id, e.Name, e.Surname
 order by Amount desc
 
+
 update Employees
 set Salary = Salary * 1.5
 where Id = (
@@ -220,3 +221,36 @@ where Id = (
     group by EmployeeId
     order by sum(TotalAmount) desc
 )
+
+
+Select b.Name as Branch, Count(e.Id) as EmployeeCount
+From Branches b
+Join Employees e On b.Id = e.BranchId
+group by b.Name
+
+
+Select b.Name as Branch, Count(s.Quantity) as ProductCount
+From Branches b
+Join Sales s On b.Id = s.BranchId
+group by b.Name
+
+
+Select e.Name as Employee, Sum(s.TotalAmount) as TotalSales
+From Sales s
+Join Employees e On e.Id = s.EmployeeId
+Where MONTH(s.SaleDate) = MONTH(GETDATE())
+Group by e.Name
+Order by TotalSales Desc
+
+Select Sum(s.TotalAmount) as TotalSales
+From Sales s
+Where MONTH(s.SaleDate) = '01'
+
+Select b.Name as Branch, Sum(s.TotalAmount) as TotalSales
+From Sales s
+Join Branches b On b.Id = s.BranchId
+Where MONTH(s.SaleDate) = MONTH(GETDATE())
+Group by b.Name
+Order by TotalSales desc
+
+
